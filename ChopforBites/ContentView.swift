@@ -8,14 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var query = ""
+    @ObservedObject var viewModel = RestaurantViewModel()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+                TextField("Search for food...", text: $query)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+
+                Button("Search") {
+                    viewModel.searchRestaurants(query: query)
+                }
+                .padding()
+
+                List(viewModel.restaurants) { restaurant in
+                    Text(restaurant.name)
+                }
+            }
+            .padding()
     }
 }
 
